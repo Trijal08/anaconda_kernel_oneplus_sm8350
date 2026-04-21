@@ -17,6 +17,11 @@
 #include <linux/syscalls.h>
 #include <linux/pagemap.h>
 #include <linux/compat.h>
+#ifdef CONFIG_KSU_SUSFS
+#include <linux/susfs_def.h>
+#include <linux/version.h>
+#include "mount.h"
+#endif
 
 #include <linux/uaccess.h>
 #include <asm/unistd.h>
