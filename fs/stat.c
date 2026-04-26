@@ -156,7 +156,7 @@ EXPORT_SYMBOL_NS(vfs_getattr, ANDROID_GKI_VFS_EXPORT_ONLY);
  * 0 will be returned on success, and a -ve error code if unsuccessful.
  */
 #ifdef CONFIG_KSU_SUSFS
-extern bool ksu_vfs_read_hook;
+extern struct static_key_false ksu_init_rc_hook_key_false;
 extern void ksu_handle_vfs_fstat(int fd, loff_t *kstat_size_ptr);
 #endif // #ifdef CONFIG_KSU_SUSFS
 
@@ -174,7 +174,7 @@ int vfs_statx_fd(unsigned int fd, struct kstat *stat,
 		error = vfs_getattr(&f.file->f_path, stat,
 				    request_mask, query_flags);
 #ifdef CONFIG_KSU_SUSFS
-		if (ksu_vfs_read_hook)
+		if (static_branch_unlikely(&ksu_init_rc_hook_key_false))
 			ksu_handle_vfs_fstat(fd, &stat->size);
 #endif // #ifdef CONFIG_KSU_SUSFS
 
